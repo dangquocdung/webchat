@@ -13,15 +13,45 @@
       });
 
       socket.on("server-send-dangki-thanh-cong",function(data){
-        var s = "<div class='motUser'>" + data + "</div>";
+        var s = "<div socketid='" + data.id + "' class='motUser'>" + data.username + "</div>";
         $("#danhsachUsersOnline").append(s);
+
+        //hide hop nhap sau khi dang ki thanh cong
+
+        // $("#txtUser").hide(1000);
+        // $("#btnDangki").hide(1000);
       });
+
+      socket.on("server-gui-message",function(data){
+        var hoten = "<span class='hoten'>" + data.username +": </span>";
+        var msg = "<span class='msg'>" + data.msg + "</span>";
+
+        $("#dsMsg").append(hoten + msg + "<div class='block'></div>");
+
+      });
+
+      socket.on("server-xuly-chocgheo", function(data){
+        alert(data + " vua moi choc ban!");
+      })
 
       $(document).ready(function(){
 
         $("#btnDangki").click(function(){
           socket.emit("client_gui_username",$("#txtUser").val());
-        })
+        });
+
+        $("#btnChat").click(function(){
+          socket.emit("client_gui_message", $("#txtMessage").val());
+          $("#txtMessage").val("");
+        });
+
+        $(document).on("click",".motUser", function(){
+          var id = $(this).attr("socketid");
+          socket.emit("user_chocgheo_socketid_khac", id);
+        });
+
+
+
 
       })
     </script>
@@ -45,8 +75,12 @@
       </div>
 
       <div id="right">
+        <div id="dsMsg"></div>
+        <div class="block"></div>
         <input type="text" id="txtMessage" placeholder="Message..." />
         <input type="button" id="btnChat" value="Chat" />
+
+
 
       </div>
     </div>

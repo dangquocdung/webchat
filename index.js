@@ -22,9 +22,17 @@ io.on("connection", function(socket){
       socket.emit("server-send-dangki-thatbai", data);
     }else{
       mangUsersOnline.push(data);
-
-      io.sockets.emit("server-send-dangki-thanh-cong", data);
+      socket.username = data;
+      io.sockets.emit("server-send-dangki-thanh-cong", {username: data, id: socket.id});
     }
+  });
+
+  socket.on("client_gui_message",function(data){
+    io.sockets.emit("server-gui-message",{username: socket.username, msg: data});
+  });
+
+  socket.on("user_chocgheo_socketid_khac", function(data){
+    io.to(data).emit("server-xuly-chocgheo", socket.username);
   })
 });
 

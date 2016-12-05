@@ -23,3 +23,7 @@ body{background-color: #d7dfed}
 }
 
 #title{text-align: center;padding: 5px; background-color: #ccf900}
+
+.hoten{color: red; font-weight: bold;}
+
+#dsMsg{height: 475px; overflow-y:scroll; }
